@@ -183,7 +183,7 @@ function AccountSettings({ user, onLogout }) {
               value={newPassword}
               onChange={(e) => {
                 setNewPassword(e.target.value);
-                setPasswordErrorMessage(''); // Clear password error message on input change
+                setPasswordErrorMessage(''); 
               }}
               className="input-box"
               placeholder="Enter new password (optional)"
