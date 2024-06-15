@@ -1,0 +1,93 @@
+body {
+  background: #F0F0F0;
+}
+
+.container {
+  border: 2px solid black;
+  color: black;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+  width: 350px;
+  height: 450px; 
+  padding: 30px; 
+  padding-top: 100px;
+  padding-left: 50px;
+  padding-right: 50px;
+  border-radius: 10px;
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr); 
+  grid-gap: 20px; 
+}
+
+.heading {
+  text-align: center;
+  font-size: 30px; 
+  font-family: cursive;
+  grid-row: span 2;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  grid-column: span 1;
+}
+
+.input-label {
+  font-size: 20px; 
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.input-box {
+  padding: 15px;
+  border: 1px solid #ccc; 
+  background-color: #ffffff; 
+  border-radius: 5px;
+  font-size: 16px;
+  height: 40px;
+  margin-bottom: 50px;
+}
+
+.btn {
+  background: #5e5bff;
+  color: white;
+  font-size: 15px;
+  border: none; 
+  padding: 15px 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  grid-row: 2;
+  justify-self: center;
+}
+
+.btn-update {
+  margin-right: 10px; /* Adjust margin between the buttons */
+}
+
+.text-center {
+  text-align: left;
+}
+
+.error-message {
+  text-align: center; /* Align text to the left for the triangle to appear at the start */
+  color: red; /* Or your desired color */
+  position: relative; /* Allows positioning the triangle */
+  top: -50px; /* Adjust vertical positioning */
+  left: -20px; /* Position at the left edge */
+}
+
+.error-message::before {
+  content: ""; /* No content needed for the triangle */
+  
+  width: 0px;
+  height: 0px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 10px solid red; /* Same color as the error message */
+  position: relative;
+  top: -13px; /* Adjust vertical positioning */
+  left: -5px; /* Position at the left edge */
+}
