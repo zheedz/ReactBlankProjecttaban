@@ -41,9 +41,9 @@ function AccountSettings({ user, onLogout }) {
       const response = await axios.get(`http://localhost:8080/api/checkUsername`, {
         params: { username }
       });
-  
+
       console.log('Check username availability response:', response);
-  
+
       if (response.status === 200) {
         if (response.data.exists) {
           setUsernameAvailabilityMessage('Username already exists. Please use a different username.');
@@ -56,37 +56,31 @@ function AccountSettings({ user, onLogout }) {
       setUsernameAvailabilityMessage('Error checking username availability.');
     }
   };
-  
-  
-  
-  
-  
-
 
   const handleUpdateDetails = async () => {
     console.log('Update Details button clicked');
     console.log('newUsername:', newUsername, 'newPassword:', newPassword);
-  
+
     if (!newUsername.trim() && !newPassword.trim()) {
       setErrorMessage('Please enter a new username or password.');
       return;
     }
-  
+
     if (newUsername === user.username) {
       setUsernameErrorMessage('New username must be different from the current one.');
       return;
     } else {
       setUsernameErrorMessage('');
     }
-  
+
     await checkUsernameAvailability(newUsername);
-  
+
     console.log('Username availability message:', usernameAvailabilityMessage);
-  
+
     if (usernameAvailabilityMessage.includes('already exists')) {
       return;
     }
-  
+
     if (newPassword) {
       const passwordError = validatePassword(newPassword);
       if (passwordError) {
@@ -96,16 +90,16 @@ function AccountSettings({ user, onLogout }) {
         setPasswordErrorMessage('');
       }
     }
-  
+
     try {
       const response = await axios.post('http://localhost:8080/api/updateAccounts', {
         username: user.username,
         newUsername: newUsername || undefined,
         newPassword: newPassword || undefined
       });
-  
+
       console.log('Server response:', response);
-  
+
       setErrorMessage('');
       setPasswordErrorMessage('');
       setUsernameErrorMessage('');
@@ -118,8 +112,7 @@ function AccountSettings({ user, onLogout }) {
       setErrorMessage('Failed to update account');
     }
   };
-  
-  
+
   const handleLogout = () => {
     if (typeof onLogout === 'function') {
       onLogout();
@@ -141,7 +134,7 @@ function AccountSettings({ user, onLogout }) {
   }, [newUsername, newPassword, passwordErrorMessage, usernameErrorMessage, usernameAvailabilityMessage]);
 
   const validateAndUpdateButton = () => {
-    if ((newUsername.trim() || newPassword.trim()) && !passwordErrorMessage && !usernameErrorMessage && !usernameAvailabilityMessage) {
+    if ((newUsername.trim() || newPassword.trim()) && !passwordErrorMessage && !usernameErrorMessage && usernameAvailabilityMessage === 'Username available!') {
       setUpdateButtonDisabled(false);
     } else {
       setUpdateButtonDisabled(true);
