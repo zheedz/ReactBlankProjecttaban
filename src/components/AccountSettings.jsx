@@ -42,84 +42,84 @@ function AccountSettings({ user, onLogout }) {
         params: { username }
       });
   
-      // Handle response based on status
+      console.log('Check username availability response:', response);
+  
       if (response.status === 200) {
         if (response.data.exists) {
           setUsernameAvailabilityMessage('Username already exists. Please use a different username.');
         } else {
           setUsernameAvailabilityMessage('Username available!');
         }
-      } else {
-        
       }
     } catch (error) {
-      
-      setUsernameAvailabilityMessage('');
+      console.error('Error checking username availability:', error);
+      setUsernameAvailabilityMessage('Error checking username availability.');
     }
   };
   
   
   
   
+  
 
 
-const handleUpdateDetails = async () => {
-  // Check if either new username or password is provided
-  if (!newUsername.trim() && !newPassword.trim()) {
-    setErrorMessage('Please enter a new username or password.');
-    return;
-  }
-
-  // Validate if the new username is different from the current one
-  if (newUsername === user.username) {
-    setUsernameErrorMessage('New username must be different from the current one.');
-    return;
-  } else {
-    setUsernameErrorMessage('');
-  }
-
-  // Check username availability
-  await checkUsernameAvailability(newUsername);
-
-  // If the username is not available, return without further action
-  if (usernameAvailabilityMessage) {
-    return;
-  }
-
-  // Optional: Validate new password if provided
-  if (newPassword) {
-    const passwordError = validatePassword(newPassword);
-    if (passwordError) {
-      setPasswordErrorMessage(passwordError);
+  const handleUpdateDetails = async () => {
+    console.log('Update Details button clicked');
+    console.log('newUsername:', newUsername, 'newPassword:', newPassword);
+  
+    if (!newUsername.trim() && !newPassword.trim()) {
+      setErrorMessage('Please enter a new username or password.');
+      return;
+    }
+  
+    if (newUsername === user.username) {
+      setUsernameErrorMessage('New username must be different from the current one.');
       return;
     } else {
-      setPasswordErrorMessage('');
+      setUsernameErrorMessage('');
     }
-  }
-
-  try {
-    // Update account details using the API
-    const response = await axios.post('http://localhost:8080/api/updateAccounts', {
-      username: user.username,
-      newUsername: newUsername || undefined,
-      newPassword: newPassword || undefined
-    });
-
-    // Handle successful update
-    setErrorMessage('');
-    setPasswordErrorMessage('');
-    setUsernameErrorMessage('');
-    setUsernameAvailabilityMessage('');
-    setNewUsername('');
-    setNewPassword('');
-    alert('Details updated successfully!');
-  } catch (error) {
-    // Handle API request errors
-    console.error('Error updating accounts:', error);
-    setErrorMessage('Failed to update account');
-  }
-};
-
+  
+    await checkUsernameAvailability(newUsername);
+  
+    console.log('Username availability message:', usernameAvailabilityMessage);
+  
+    if (usernameAvailabilityMessage.includes('already exists')) {
+      return;
+    }
+  
+    if (newPassword) {
+      const passwordError = validatePassword(newPassword);
+      if (passwordError) {
+        setPasswordErrorMessage(passwordError);
+        return;
+      } else {
+        setPasswordErrorMessage('');
+      }
+    }
+  
+    try {
+      const response = await axios.post('http://localhost:8080/api/updateAccounts', {
+        username: user.username,
+        newUsername: newUsername || undefined,
+        newPassword: newPassword || undefined
+      });
+  
+      console.log('Server response:', response);
+  
+      setErrorMessage('');
+      setPasswordErrorMessage('');
+      setUsernameErrorMessage('');
+      setUsernameAvailabilityMessage('');
+      setNewUsername('');
+      setNewPassword('');
+      alert('Details updated successfully!');
+    } catch (error) {
+      console.error('Error updating accounts:', error);
+      setErrorMessage('Failed to update account');
+    }
+  };
+  
+  
   const handleLogout = () => {
     if (typeof onLogout === 'function') {
       onLogout();
